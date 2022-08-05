@@ -46,7 +46,6 @@ namespace TestCSharp
                         parentFound = true;
                     }
                     // Case 2: the parent is already in one of the trees and needs to be found.
-                   
                     else if(nodeList[i].containedIdsLookup.Contains(rn.parentId)) {
                         RecordNode parent = FindParentNode(rn, nodeList[i]);
                         if(!(parent == null))
@@ -56,12 +55,11 @@ namespace TestCSharp
                         }
                     }
                 }
-
                 // If unsuccessful, add itself to the global list.
                 // TODO: make it insert self so that the list stays sorted.
                 if (!parentFound)
                 {
-                    nodeList.Add(rn);
+                    nodeList.Insert(Sorter.GetInsertId(rn.id, nodeList), rn);
                 }
                 
             }

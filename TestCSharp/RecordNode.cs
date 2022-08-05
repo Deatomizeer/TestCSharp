@@ -52,7 +52,8 @@ namespace TestCSharp
         public void AddChild(RecordNode child)
         {
             // TODO: Make the node insert self so the list stays sorted in regard to node ID.
-            children.Add(child);
+            //children.Add(child);
+            children.Insert(Sorter.GetInsertId(child.id, children), child);
             child.parent = this;
             RecursivelyUpdateIdLookup(child, this);
         }
@@ -65,7 +66,7 @@ namespace TestCSharp
             {
                 output += new string(' ', indentation<<1) + "-> ";
             }
-            output += GetData();
+            output += GetIdData();
             Console.WriteLine(output);// + " " + string.Join("-", containedIdsLookup.ToArray())) ;
             foreach(RecordNode c in children)
             {
