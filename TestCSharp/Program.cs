@@ -12,10 +12,25 @@ namespace TestCSharp
         public static List<RecordNode> nodeList = new List<RecordNode>();
         static void Main(string[] args)
         {
-            
+            // Ensure that an argument was provided.
+            if(args.Length != 1)
+            {
+                Console.WriteLine("Usage: .\\TestCSharp file_name");
+                return;
+            }
             // Get the data from the csv file specified by the user.
             string inputFileName = args[0];
-            string text = System.IO.File.ReadAllText(inputFileName);
+            string text;
+            try
+            {
+                text = System.IO.File.ReadAllText(inputFileName);
+            }
+            catch(System.IO.FileNotFoundException)
+            {
+                Console.WriteLine("Cannot find specified file.");
+                return;
+            }
+            
             // Split the text file's content into individual lines to be processed,
             List<string> lineList = new List<string>(text.Split('\n'));
 
@@ -32,7 +47,7 @@ namespace TestCSharp
                     {
                         rn.AddChild(nodeList[i]);
                         nodeList.RemoveAt(i);
-                        i--;
+                        i--;    // Adjust for the removed item.
                     }
                 }
                 // Attempt to find own parent.

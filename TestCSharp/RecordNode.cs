@@ -24,8 +24,6 @@ namespace TestCSharp
         // A list of all record IDs in this tree to help to populate it with new nodes.
         public List<int> containedIdsLookup = new List<int>();
 
-
-
         public RecordNode(string recordString)
         {
             // Each record is expected to be in format:
@@ -43,20 +41,21 @@ namespace TestCSharp
         {
             return name + ", " + company + ", " + position;
         }
+
         // Return only the node's ID and its parent's ID.
         public string GetIdData()
         {
             return id + " " + parentId;
         }
+
         // Add the specified node to the list of this node's children and update its lookup list.
         public void AddChild(RecordNode child)
         {
-            // TODO: Make the node insert self so the list stays sorted in regard to node ID.
-            //children.Add(child);
             children.Insert(Sorter.GetInsertId(child.id, children), child);
             child.parent = this;
             RecursivelyUpdateIdLookup(child, this);
         }
+
         // Recursively print data about self and all children.
         public void Print(int indentation)
         {
@@ -66,19 +65,31 @@ namespace TestCSharp
             {
                 output += new string(' ', indentation<<1) + "-> ";
             }
-            output += GetIdData();
-            Console.WriteLine(output);// + " " + string.Join("-", containedIdsLookup.ToArray())) ;
+            output += GetData();
+            Console.WriteLine(output);
             foreach(RecordNode c in children)
             {
                 c.Print(indentation + 1);
             }
         }
-        //
+
+        // Push the contained nodes upward so next records can find their parents easier.
         public void RecursivelyUpdateIdLookup(RecordNode child, RecordNode parent)
         {
-            // TODO: Add the values as if they were sets, not lists.
-            parent.containedIdsLookup.AddRange(child.containedIdsLookup);
-            parent.containedIdsLookup.Add(child.id);
+            // First consider the lookup list of the child, then own ID.
+            // Add only new IDs to the list.
+            foreach(int id in child.containedIdsLookup)
+            {
+                if (!(parent.containedIdsLookup.Contains(id)))
+                {
+                    parent.containedIdsLookup.Add(id);
+                }
+            }
+            if (!(parent.containedIdsLookup.Contains(child.id)))
+            {
+                parent.containedIdsLookup.Add(child.id);
+            }
+            // Do the same for the parent node.
             if (!(parent.parent == null))
             {
                 RecursivelyUpdateIdLookup(parent, parent.parent);

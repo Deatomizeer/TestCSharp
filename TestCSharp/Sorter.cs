@@ -37,7 +37,7 @@ namespace TestCSharp
                     b = i;
                 }
             } while (!(previousI == i));
-            // When the search stops, check if the record should be inserted at i or i+1.
+            // When the search stops, make a final comparison to check if the record should be inserted at i or i+1.
             return recordId > list[i].id ? i + 1 : i;
         }
     }
