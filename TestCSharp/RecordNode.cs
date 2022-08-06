@@ -24,6 +24,15 @@ namespace TestCSharp
         // A list of all record IDs in this tree to help to populate it with new nodes.
         public List<int> containedIdsLookup = new List<int>();
 
+        public RecordNode(int id, int parentId, string name, string company, string position)
+        {
+            this.id = id;
+            this.parentId = parentId;
+            this.name = name;
+            this.company = company;
+            this.position = position;
+        }
+
         public RecordNode(string recordString)
         {
             // Each record is expected to be in format:
